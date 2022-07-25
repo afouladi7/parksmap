@@ -7,6 +7,18 @@ metadata:
   name: demo
 spec: {}
 ---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  namespace: demo
+  name: mem-cpu-demo
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -55,7 +67,13 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
-          resources: {}
+          resources:
+            limits:
+              memory: "800Mi"
+              cpu: "800m"
+            requests:
+              memory: "600Mi"
+              cpu: "400m"
 ---
 kind: Service
 apiVersion: v1
